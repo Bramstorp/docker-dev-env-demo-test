@@ -2,7 +2,7 @@
 FROM python:3.8.3-alpine
 
 # set work directory
-WORKDIR /src/base
+WORKDIR /base
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -24,4 +24,4 @@ COPY ./entrypoint.sh /
 COPY . .
 
 # run entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
