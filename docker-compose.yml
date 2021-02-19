@@ -5,6 +5,14 @@ services:
     build: .
     command: python3 src/manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/code
+      - .:/src/base
     ports:
       - "8000:8000"
+    depends_on: 
+      - db
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=db

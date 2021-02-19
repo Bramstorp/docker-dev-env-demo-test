@@ -1,20 +1,21 @@
-FROM python:3.8-slim
-  
-RUN apt-get update && apt-get install
+# pull official base image
+FROM python:3.8.3-alpine
 
-RUN apt-get install -y \
-  dos2unix \
-  libpq-dev \
-  libmariadb-dev-compat \
-  libmariadb-dev \
-  gcc \
-  && apt-get clean
+# set work directory
+WORKDIR /src/base
 
-RUN python -m pip install
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-COPY requirements.txt requirements.txt
-RUN python -m pip install -r requirements.txt
+# install psycopg2 dependencies
+RUN apk update \
+    && apk add postgresql-dev gcc python3-dev musl-dev
 
-RUN mkdir /code
-WORKDIR /code
-ADD . /code/
+# install dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+
+# copy project
+COPY . .
